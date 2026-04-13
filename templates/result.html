@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% block title %}Hasil Penilaian — InvestIQ{% endblock %}
+
+{% block content %}
+<div class="result-wrapper">
+
+    <!-- Hero Result -->
+    <div class="result-hero result-hero--{{ profile_key }}">
+        <div class="result-hero-bg"></div>
+        <div class="result-confetti" id="confetti"></div>
+
+        <div class="result-header">
+            <div class="result-badge">Profil Risiko Anda</div>
+            <div class="result-icon-big">{{ profile.icon }}</div>
+            <h1 class="result-title">{{ profile.label }}</h1>
+            <div class="result-cf-main">
+                <span class="cf-label">Certainty Factor</span>
+                <span class="cf-value" data-target="{{ cf_results[profile_key] }}">0%</span>
+            </div>
+            <p class="result-desc">{{ profile.description }}</p>
+        </div>
+
+        <div class="result-meta">
+            <span>{{ name }}</span>
+            <span class="meta-dot">·</span>
+            <span>{{ timestamp }}</span>
+        </div>
+    </div>
+
+    <!-- CF Comparison Bar Chart -->
+    <div class="section-card">
+        <h2 class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+            Perbandingan Skor Kepercayaan
+        </h2>
+        <div class="cf-bars">
+            {% for pk, pdata in all_profiles.items() %}
+            <div class="cf-bar-item {% if pk == profile_key %}cf-bar-item--best{% endif %}">
+                <div class="cf-bar-header">
+                    <span class="cf-bar-icon">{{ pdata.icon }}</span>
+                    <span class="cf-bar-label">{{ pdata.label }}</span>
+                    <span class="cf-bar-pct">{{ cf_results[pk] }}%</span>
+                </div>
+                <div class="cf-bar-track">
+                    <div class="cf-bar-fill cf-bar-fill--{{ pk }}" data-width="{{ [cf_results[pk], 100] | min }}"
+                        style="width: 0%">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Rekomendasi Investasi -->
+    <div class="section-card">
+        <h2 class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+            Rekomendasi Instrumen Investasi
+        </h2>
+        <div class="rec-grid">
+            {% for item in profile.rekomendasi %}
+            <div class="rec-card rec-card--{{ profile_key }}">
+                <div class="rec-num">{{ loop.index }}</div>
+                <span>{{ item }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Rule Trace (Forward Chaining) -->
+    {% if trace %}
+    <div class="section-card">
+        <h2 class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 11 12 14 22 4" />
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+            </svg>
+            Jejak Inferensi (Forward Chaining)
+        </h2>
+        <div class="trace-list">
+            {% for rule in trace %}
+            <div class="trace-item">
+                <div class="trace-header">
+                    <span class="trace-rule">Rule #{{ rule.rule_idx }}</span>
+                    <span class="trace-cf-badge">CF = {{ rule.cf }}</span>
+                </div>
+                <div class="trace-conditions">
+                    <span class="trace-if">IF</span>
+                    {% for cond in rule.conditions %}
+                    <span class="trace-cond">
+                        <span class="trace-qid">{{ cond.qid }}</span>
+                        <span class="trace-eq">= </span>
+                        <span class="trace-val {% if cond.value %}trace-val--yes{% else %}trace-val--no{% endif %}">
+                            {{ "YA" if cond.value else "TIDAK" }}
+                        </span>
+                    </span>
+                    {% if not loop.last %}<span class="trace-and">AND</span>{% endif %}
+                    {% endfor %}
+                    <span class="trace-then">→ TERPENUHI ✓</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="trace-formula">
+            <div class="formula-title">Rumus Kombinasi CF</div>
+            <code class="formula-code">CF_combined = CF₁ + CF₂ × (1 − CF₁)</code>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Jawaban User -->
+    <div class="section-card">
+        <h2 class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+            </svg>
+            Ringkasan Jawaban Anda
+        </h2>
+        <div class="answers-grid">
+            {% for item in answered %}
+            <div class="answer-item">
+                <div class="answer-qid">{{ item.id }}</div>
+                <div class="answer-content">
+                    <div class="answer-category">{{ item.category }}</div>
+                    <div class="answer-text">{{ item.text }}</div>
+                </div>
+                <div class="answer-pill {% if item.answer %}answer-pill--yes{% else %}answer-pill--no{% endif %}">
+                    {% if item.answer %}✓ Ya{% else %}✗ Tidak{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="result-actions">
+        <a href="{{ url_for('index') }}" class="btn-action btn-action--primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10" />
+                <path d="M3.51 15a9 9 0 102.13-9.36L1 10" />
+            </svg>
+            Ulangi Penilaian
+        </a>
+        <button onclick="window.print()" class="btn-action btn-action--secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 6 2 18 2 18 9" />
+                <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+                <rect x="6" y="14" width="12" height="8" />
+            </svg>
+            Cetak Hasil
+        </button>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const cfData = {{ cf_results | tojson }};
+    const profileKey = "{{ profile_key }}";
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Animasi CF value counter
+        const cfEl = document.querySelector('.cf-value');
+        const target = parseFloat(cfEl.dataset.target);
+        let current = 0;
+        const step = target / 60;
+        const timer = setInterval(() => {
+            current = Math.min(current + step, target);
+            cfEl.textContent = current.toFixed(1) + '%';
+            if (current >= target) clearInterval(timer);
+        }, 16);
+
+        // Animasi CF bars
+        setTimeout(() => {
+            document.querySelectorAll('.cf-bar-fill').forEach(bar => {
+                const w = parseFloat(bar.dataset.width) || 0;
+                bar.style.transition = 'width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                bar.style.width = Math.min(w, 100) + '%';
+            });
+        }, 300);
+
+        // Confetti sederhana untuk profil agresif/moderat
+        if (profileKey === 'agresif' || profileKey === 'moderat') {
+            createConfetti();
+        }
+    });
+
+    function createConfetti() {
+        const container = document.getElementById('confetti');
+        const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa'];
+        for (let i = 0; i < 40; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'confetti-dot';
+            dot.style.cssText = `
+      left: ${Math.random() * 100}%;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      animation-delay: ${Math.random() * 2}s;
+      animation-duration: ${2 + Math.random() * 2}s;
+      width: ${4 + Math.random() * 6}px;
+      height: ${4 + Math.random() * 6}px;
+    `;
+            container.appendChild(dot);
+        }
+    }
+</script>
+{% endblock %}

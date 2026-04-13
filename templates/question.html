@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Pertanyaan {{ index + 1 }} — InvestIQ{% endblock %}
+
+{% block content %}
+<div class="question-wrapper">
+
+    <!-- Progress Header -->
+    <div class="q-header">
+        <div class="q-meta">
+            <span class="q-greeting">Halo, <strong>{{ name }}</strong></span>
+            <span class="q-counter">{{ index + 1 }} / {{ total }}</span>
+        </div>
+        <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width: {{ progress }}%"></div>
+            <span class="progress-pct">{{ progress }}%</span>
+        </div>
+        <div class="q-steps">
+            {% for i in range(total) %}
+            <div class="step {% if i < index %}step--done{% elif i == index %}step--active{% endif %}">
+                {% if i < index %} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="3">
+                    <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    {% else %}
+                    {{ i + 1 }}
+                    {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="q-card" id="questionCard">
+        <div class="q-category-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4M12 16h.01" />
+            </svg>
+            {{ question.category }}
+        </div>
+
+        <div class="q-number-display">Q{{ question.id[1:] }}</div>
+        <h2 class="q-text">{{ question.text }}</h2>
+
+        <form action="{{ url_for('answer') }}" method="post" class="q-form" id="answerForm">
+            <div class="answer-buttons">
+
+                <button type="submit" name="answer" value="ya" class="btn-answer btn-answer--yes" id="btnYes">
+                    <div class="answer-icon-wrap">
+                        <div class="answer-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="answer-label">Ya</span>
+                    <span class="answer-desc">Saya setuju / Ini berlaku untuk saya</span>
+                </button>
+
+                <button type="submit" name="answer" value="tidak" class="btn-answer btn-answer--no" id="btnNo">
+                    <div class="answer-icon-wrap">
+                        <div class="answer-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="answer-label">Tidak</span>
+                    <span class="answer-desc">Saya tidak setuju / Ini tidak berlaku</span>
+                </button>
+
+            </div>
+        </form>
+    </div>
+
+    <p class="q-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4M12 8h.01" />
+        </svg>
+        Tekan <kbd class="kbd">Y</kbd> untuk Ya &nbsp;·&nbsp; <kbd class="kbd">N</kbd> untuk Tidak
+    </p>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Animasi card masuk
+        const card = document.getElementById('questionCard');
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(24px)';
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 50);
+
+        // Keyboard shortcut
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'y' || e.key === 'Y') triggerAnswer('btnYes');
+            else if (e.key === 'n' || e.key === 'N') triggerAnswer('btnNo');
+        });
+
+        // Click — visual state tanpa disabled agar form tetap submit
+        document.querySelectorAll('.btn-answer').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const otherId = this.id === 'btnYes' ? 'btnNo' : 'btnYes';
+                const other = document.getElementById(otherId);
+                this.classList.add('btn-answer--chosen');
+                other.classList.add('btn-answer--faded');
+                other.style.pointerEvents = 'none';
+            });
+        });
+    });
+
+    function triggerAnswer(btnId) {
+        const btn = document.getElementById(btnId);
+        if (btn && !btn.classList.contains('btn-answer--chosen')) btn.click();
+    }
+</script>
+{% endblock %}
