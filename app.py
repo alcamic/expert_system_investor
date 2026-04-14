@@ -17,13 +17,13 @@ QUESTIONS = [
     },
     {
         "id": "Q2",
-        "text": "Apakah penghasilan bulanan Anda di atas Rp 10.000.000?",
-        "category": "Finansial"
+        "text": "Apakah Anda saat ini memiliki tanggungan keluarga (pasangan, anak, atau orang tua)?",
+        "category": "Demografis"
     },
     {
         "id": "Q3",
-        "text": "Apakah Anda memiliki tanggungan keluarga (istri/suami, anak, orang tua)?",
-        "category": "Demografis"
+        "text": "Apakah penghasilan bulanan Anda di atas Rp 10.000.000?",
+        "category": "Finansial"
     },
     {
         "id": "Q4",
@@ -32,44 +32,64 @@ QUESTIONS = [
     },
     {
         "id": "Q5",
-        "text": "Apakah Anda memiliki pengalaman berinvestasi lebih dari 3 tahun?",
-        "category": "Pengalaman"
+        "text": "Apakah Anda saat ini memiliki hutang atau cicilan jangka panjang yang signifikan (KPR, KKB, dll)?",
+        "category": "Finansial"
     },
     {
         "id": "Q6",
-        "text": "Apakah Anda bersedia menerima kerugian lebih dari 20% dari nilai investasi Anda?",
-        "category": "Toleransi Risiko"
+        "text": "Apakah Anda memiliki asuransi jiwa atau asuransi kesehatan yang aktif saat ini?",
+        "category": "Finansial"
     },
     {
         "id": "Q7",
-        "text": "Apakah tujuan investasi Anda untuk jangka panjang (lebih dari 5 tahun)?",
-        "category": "Tujuan"
+        "text": "Apakah Anda sudah memiliki pengalaman berinvestasi lebih dari 3 tahun?",
+        "category": "Pengalaman"
     },
     {
         "id": "Q8",
-        "text": "Apakah Anda memiliki pengetahuan tentang instrumen investasi seperti saham atau reksa dana?",
+        "text": "Apakah Anda memahami konsep diversifikasi portofolio dan manfaatnya dalam mengurangi risiko?",
         "category": "Pengalaman"
     },
     {
         "id": "Q9",
-        "text": "Apakah Anda lebih memilih keamanan modal daripada potensi keuntungan besar?",
-        "category": "Toleransi Risiko"
+        "text": "Apakah Anda pernah berinvestasi pada instrumen berisiko tinggi seperti saham atau reksa dana saham?",
+        "category": "Pengalaman"
     },
     {
         "id": "Q10",
-        "text": "Apakah Anda merasa nyaman jika nilai portofolio Anda berfluktuasi signifikan setiap harinya?",
+        "text": "Apakah Anda bersedia menerima penurunan nilai investasi lebih dari 20% dalam jangka pendek demi potensi keuntungan lebih besar?",
         "category": "Toleransi Risiko"
     },
     {
         "id": "Q11",
-        "text": "Apakah Anda memiliki hutang atau cicilan jangka panjang yang signifikan saat ini?",
-        "category": "Finansial"
+        "text": "Apakah Anda lebih memilih keamanan modal (tidak rugi) daripada kemungkinan memperoleh keuntungan besar?",
+        "category": "Toleransi Risiko"
     },
     {
         "id": "Q12",
-        "text": "Apakah Anda pernah berinvestasi di instrumen berisiko tinggi seperti saham atau kripto?",
-        "category": "Pengalaman"
+        "text": "Apakah Anda merasa nyaman jika nilai portofolio investasi Anda berfluktuasi secara signifikan setiap harinya?",
+        "category": "Toleransi Risiko"
     },
+    {
+        "id": "Q13",
+        "text": "Apakah tujuan utama investasi Anda adalah untuk jangka panjang (lebih dari 5 tahun), seperti pensiun atau pendidikan anak?",
+        "category": "Tujuan"
+    },
+    {
+        "id": "Q14",
+        "text": "Apakah Anda menginvestasikan dana yang tidak akan Anda butuhkan dalam waktu dekat (bukan dana kebutuhan rutin)?",
+        "category": "Tujuan"
+    },
+    {
+        "id": "Q15",
+        "text": "Apakah Anda cenderung membuat keputusan investasi berdasarkan analisis dan data, bukan berdasarkan rumor atau tren sesaat?",
+        "category": "Perilaku"
+    },
+    {
+        "id": "Q16",
+        "text": "Apakah Anda tetap mempertahankan (tidak menjual panik) investasi Anda ketika pasar sedang turun tajam?",
+        "category": "Perilaku"
+    }
 ]
 
 # ─────────────────────────────────────────────
@@ -79,53 +99,57 @@ DEFAULT_RULES = {
     "sangat_konservatif": {
         "label": "Sangat Konservatif",
         "color": "#4ade80",
-        "icon": "🛡️",
         "description": "Profil ini sangat mengutamakan keamanan modal. Investor cocok dengan instrumen seperti deposito, tabungan, dan obligasi pemerintah dengan risiko sangat rendah.",
         "rekomendasi": ["Deposito Bank", "Tabungan Berjangka", "Obligasi Negara Ritel (ORI)", "Reksa Dana Pasar Uang"],
         "rules": [
-            {"conditions": [{"qid":"Q9","value":True},{"qid":"Q3","value":True},{"qid":"Q11","value":True}], "cf": 0.85},
-            {"conditions": [{"qid":"Q9","value":True},{"qid":"Q4","value":False}], "cf": 0.80},
-            {"conditions": [{"qid":"Q9","value":True},{"qid":"Q1","value":False}], "cf": 0.75},
-            {"conditions": [{"qid":"Q6","value":False},{"qid":"Q10","value":False},{"qid":"Q9","value":True}], "cf": 0.90},
+            {"conditions": [{"qid": "Q11", "value": True}, {"qid": "Q10", "value": False}, {"qid": "Q12", "value": False}], "cf": 0.95},
+            {"conditions": [{"qid": "Q4", "value": False}, {"qid": "Q5", "value": True}, {"qid": "Q11", "value": True}], "cf": 0.90},
+            {"conditions": [{"qid": "Q7", "value": False}, {"qid": "Q8", "value": False}, {"qid": "Q9", "value": False}], "cf": 0.85},
+            {"conditions": [{"qid": "Q13", "value": False}, {"qid": "Q14", "value": False}, {"qid": "Q11", "value": True}], "cf": 0.88},
+            {"conditions": [{"qid": "Q2", "value": True}, {"qid": "Q4", "value": False}, {"qid": "Q16", "value": False}], "cf": 0.82},
+            {"conditions": [{"qid": "Q15", "value": False}, {"qid": "Q16", "value": False}, {"qid": "Q10", "value": False}], "cf": 0.80}
         ]
     },
     "konservatif": {
         "label": "Konservatif",
         "color": "#60a5fa",
-        "icon": "🔵",
         "description": "Investor dengan profil ini lebih menyukai investasi aman dengan sedikit toleransi terhadap risiko. Cocok untuk instrumen pendapatan tetap.",
         "rekomendasi": ["Reksa Dana Pendapatan Tetap", "Obligasi Korporasi", "ORI/SBR", "Deposito"],
         "rules": [
-            {"conditions": [{"qid":"Q9","value":True},{"qid":"Q4","value":True},{"qid":"Q6","value":False}], "cf": 0.80},
-            {"conditions": [{"qid":"Q9","value":True},{"qid":"Q5","value":False},{"qid":"Q10","value":False}], "cf": 0.75},
-            {"conditions": [{"qid":"Q3","value":True},{"qid":"Q7","value":False},{"qid":"Q9","value":True}], "cf": 0.70},
-            {"conditions": [{"qid":"Q2","value":False},{"qid":"Q9","value":True}], "cf": 0.72},
+            {"conditions": [{"qid": "Q11", "value": True}, {"qid": "Q10", "value": False}, {"qid": "Q4", "value": True}], "cf": 0.85},
+            {"conditions": [{"qid": "Q7", "value": False}, {"qid": "Q8", "value": True}, {"qid": "Q9", "value": False}], "cf": 0.80},
+            {"conditions": [{"qid": "Q13", "value": False}, {"qid": "Q14", "value": True}, {"qid": "Q12", "value": False}], "cf": 0.78},
+            {"conditions": [{"qid": "Q2", "value": True}, {"qid": "Q6", "value": True}, {"qid": "Q11", "value": True}], "cf": 0.75},
+            {"conditions": [{"qid": "Q9", "value": False}, {"qid": "Q15", "value": True}, {"qid": "Q16", "value": True}], "cf": 0.82},
+            {"conditions": [{"qid": "Q3", "value": False}, {"qid": "Q4", "value": True}, {"qid": "Q10", "value": False}], "cf": 0.76}
         ]
     },
     "moderat": {
         "label": "Moderat",
         "color": "#f59e0b",
-        "icon": "⚖️",
         "description": "Investor moderat menerima risiko menengah demi potensi keuntungan yang lebih baik. Portofolio campuran antara saham dan obligasi sangat disarankan.",
         "rekomendasi": ["Reksa Dana Campuran", "Saham Blue Chip", "Obligasi Korporasi", "ETF"],
         "rules": [
-            {"conditions": [{"qid":"Q5","value":True},{"qid":"Q6","value":False},{"qid":"Q7","value":True}], "cf": 0.80},
-            {"conditions": [{"qid":"Q8","value":True},{"qid":"Q9","value":False},{"qid":"Q4","value":True}], "cf": 0.78},
-            {"conditions": [{"qid":"Q1","value":True},{"qid":"Q6","value":False},{"qid":"Q10","value":False}], "cf": 0.75},
-            {"conditions": [{"qid":"Q2","value":True},{"qid":"Q9","value":False},{"qid":"Q3","value":True}], "cf": 0.72},
+            {"conditions": [{"qid": "Q8", "value": True}, {"qid": "Q11", "value": False}, {"qid": "Q10", "value": False}], "cf": 0.85},
+            {"conditions": [{"qid": "Q4", "value": True}, {"qid": "Q7", "value": True}, {"qid": "Q12", "value": False}], "cf": 0.82},
+            {"conditions": [{"qid": "Q13", "value": True}, {"qid": "Q14", "value": True}, {"qid": "Q9", "value": False}], "cf": 0.80},
+            {"conditions": [{"qid": "Q1", "value": True}, {"qid": "Q15", "value": True}, {"qid": "Q10", "value": False}], "cf": 0.78},
+            {"conditions": [{"qid": "Q3", "value": True}, {"qid": "Q2", "value": True}, {"qid": "Q16", "value": True}], "cf": 0.75},
+            {"conditions": [{"qid": "Q9", "value": True}, {"qid": "Q11", "value": False}, {"qid": "Q16", "value": True}], "cf": 0.88}
         ]
     },
     "agresif": {
         "label": "Agresif",
         "color": "#f87171",
-        "icon": "🚀",
         "description": "Investor agresif siap menghadapi risiko tinggi demi potensi keuntungan maksimal. Cocok untuk saham pertumbuhan, kripto, atau instrumen derivatif.",
         "rekomendasi": ["Saham Growth", "Reksa Dana Saham", "Kripto (sebagian kecil)", "ETF Tematik"],
         "rules": [
-            {"conditions": [{"qid":"Q6","value":True},{"qid":"Q10","value":True},{"qid":"Q5","value":True}], "cf": 0.90},
-            {"conditions": [{"qid":"Q1","value":True},{"qid":"Q6","value":True},{"qid":"Q7","value":True}], "cf": 0.85},
-            {"conditions": [{"qid":"Q12","value":True},{"qid":"Q8","value":True},{"qid":"Q6","value":True}], "cf": 0.88},
-            {"conditions": [{"qid":"Q2","value":True},{"qid":"Q6","value":True},{"qid":"Q4","value":True}], "cf": 0.82},
+            {"conditions": [{"qid": "Q10", "value": True}, {"qid": "Q11", "value": False}, {"qid": "Q12", "value": True}], "cf": 0.95},
+            {"conditions": [{"qid": "Q4", "value": True}, {"qid": "Q9", "value": True}, {"qid": "Q16", "value": True}], "cf": 0.90},
+            {"conditions": [{"qid": "Q1", "value": True}, {"qid": "Q13", "value": True}, {"qid": "Q14", "value": True}], "cf": 0.88},
+            {"conditions": [{"qid": "Q7", "value": True}, {"qid": "Q8", "value": True}, {"qid": "Q15", "value": True}], "cf": 0.85},
+            {"conditions": [{"qid": "Q3", "value": True}, {"qid": "Q5", "value": False}, {"qid": "Q6", "value": True}], "cf": 0.82},
+            {"conditions": [{"qid": "Q12", "value": True}, {"qid": "Q15", "value": True}, {"qid": "Q10", "value": True}], "cf": 0.92}
         ]
     }
 }

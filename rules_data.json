@@ -2,7 +2,6 @@
   "sangat_konservatif": {
     "label": "Sangat Konservatif",
     "color": "#4ade80",
-    "icon": "\ud83d\udee1\ufe0f",
     "description": "Profil ini sangat mengutamakan keamanan modal. Investor cocok dengan instrumen seperti deposito, tabungan, dan obligasi pemerintah dengan risiko sangat rendah.",
     "rekomendasi": [
       "Deposito Bank",
@@ -14,11 +13,28 @@
       {
         "conditions": [
           {
-            "qid": "Q9",
+            "qid": "Q11",
             "value": true
           },
           {
-            "qid": "Q3",
+            "qid": "Q10",
+            "value": false
+          },
+          {
+            "qid": "Q12",
+            "value": false
+          }
+        ],
+        "cf": 0.95
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q4",
+            "value": false
+          },
+          {
+            "qid": "Q5",
             "value": true
           },
           {
@@ -26,255 +42,21 @@
             "value": true
           }
         ],
-        "cf": 0.85
-      },
-      {
-        "conditions": [
-          {
-            "qid": "Q9",
-            "value": true
-          },
-          {
-            "qid": "Q4",
-            "value": false
-          }
-        ],
-        "cf": 0.8
-      },
-      {
-        "conditions": [
-          {
-            "qid": "Q9",
-            "value": true
-          },
-          {
-            "qid": "Q1",
-            "value": false
-          }
-        ],
-        "cf": 0.75
-      },
-      {
-        "conditions": [
-          {
-            "qid": "Q6",
-            "value": false
-          },
-          {
-            "qid": "Q10",
-            "value": false
-          },
-          {
-            "qid": "Q9",
-            "value": true
-          }
-        ],
         "cf": 0.9
-      }
-    ]
-  },
-  "konservatif": {
-    "label": "Konservatif",
-    "color": "#60a5fa",
-    "icon": "\ud83d\udd35",
-    "description": "Investor dengan profil ini lebih menyukai investasi aman dengan sedikit toleransi terhadap risiko. Cocok untuk instrumen pendapatan tetap.",
-    "rekomendasi": [
-      "Reksa Dana Pendapatan Tetap",
-      "Obligasi Korporasi",
-      "ORI/SBR",
-      "Deposito"
-    ],
-    "rules": [
-      {
-        "conditions": [
-          {
-            "qid": "Q9",
-            "value": true
-          },
-          {
-            "qid": "Q4",
-            "value": true
-          },
-          {
-            "qid": "Q6",
-            "value": false
-          }
-        ],
-        "cf": 0.8
       },
       {
         "conditions": [
-          {
-            "qid": "Q9",
-            "value": true
-          },
-          {
-            "qid": "Q5",
-            "value": false
-          },
-          {
-            "qid": "Q10",
-            "value": false
-          }
-        ],
-        "cf": 0.75
-      },
-      {
-        "conditions": [
-          {
-            "qid": "Q3",
-            "value": true
-          },
           {
             "qid": "Q7",
             "value": false
           },
-          {
-            "qid": "Q9",
-            "value": true
-          }
-        ],
-        "cf": 0.7
-      },
-      {
-        "conditions": [
-          {
-            "qid": "Q2",
-            "value": false
-          },
-          {
-            "qid": "Q9",
-            "value": true
-          }
-        ],
-        "cf": 0.72
-      }
-    ]
-  },
-  "moderat": {
-    "label": "Moderat",
-    "color": "#f59e0b",
-    "icon": "\u2696\ufe0f",
-    "description": "Investor moderat menerima risiko menengah demi potensi keuntungan yang lebih baik. Portofolio campuran antara saham dan obligasi sangat disarankan.",
-    "rekomendasi": [
-      "Reksa Dana Campuran",
-      "Saham Blue Chip",
-      "Obligasi Korporasi",
-      "ETF"
-    ],
-    "rules": [
-      {
-        "conditions": [
-          {
-            "qid": "Q5",
-            "value": true
-          },
-          {
-            "qid": "Q6",
-            "value": false
-          },
-          {
-            "qid": "Q7",
-            "value": true
-          }
-        ],
-        "cf": 0.8
-      },
-      {
-        "conditions": [
           {
             "qid": "Q8",
-            "value": true
+            "value": false
           },
           {
             "qid": "Q9",
             "value": false
-          },
-          {
-            "qid": "Q4",
-            "value": true
-          }
-        ],
-        "cf": 0.78
-      },
-      {
-        "conditions": [
-          {
-            "qid": "Q1",
-            "value": true
-          },
-          {
-            "qid": "Q6",
-            "value": false
-          },
-          {
-            "qid": "Q10",
-            "value": false
-          }
-        ],
-        "cf": 0.75
-      },
-      {
-        "conditions": [
-          {
-            "qid": "Q2",
-            "value": true
-          },
-          {
-            "qid": "Q9",
-            "value": false
-          },
-          {
-            "qid": "Q3",
-            "value": true
-          }
-        ],
-        "cf": 0.72
-      }
-    ]
-  },
-  "agresif": {
-    "label": "Agresif",
-    "color": "#f87171",
-    "icon": "\ud83d\ude80",
-    "description": "Investor agresif siap menghadapi risiko tinggi demi potensi keuntungan maksimal. Cocok untuk saham pertumbuhan, kripto, atau instrumen derivatif.",
-    "rekomendasi": [
-      "Saham Growth",
-      "Reksa Dana Saham",
-      "Kripto (sebagian kecil)",
-      "ETF Tematik"
-    ],
-    "rules": [
-      {
-        "conditions": [
-          {
-            "qid": "Q6",
-            "value": true
-          },
-          {
-            "qid": "Q10",
-            "value": true
-          },
-          {
-            "qid": "Q5",
-            "value": true
-          }
-        ],
-        "cf": 0.9
-      },
-      {
-        "conditions": [
-          {
-            "qid": "Q1",
-            "value": true
-          },
-          {
-            "qid": "Q6",
-            "value": true
-          },
-          {
-            "qid": "Q7",
-            "value": true
           }
         ],
         "cf": 0.85
@@ -282,15 +64,15 @@
       {
         "conditions": [
           {
-            "qid": "Q12",
-            "value": true
+            "qid": "Q13",
+            "value": false
           },
           {
-            "qid": "Q8",
-            "value": true
+            "qid": "Q14",
+            "value": false
           },
           {
-            "qid": "Q6",
+            "qid": "Q11",
             "value": true
           }
         ],
@@ -303,15 +85,377 @@
             "value": true
           },
           {
-            "qid": "Q6",
+            "qid": "Q4",
+            "value": false
+          },
+          {
+            "qid": "Q16",
+            "value": false
+          }
+        ],
+        "cf": 0.82
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q15",
+            "value": false
+          },
+          {
+            "qid": "Q16",
+            "value": false
+          },
+          {
+            "qid": "Q10",
+            "value": false
+          }
+        ],
+        "cf": 0.8
+      }
+    ]
+  },
+  "konservatif": {
+    "label": "Konservatif",
+    "color": "#60a5fa",
+    "description": "Investor dengan profil ini lebih menyukai investasi aman dengan sedikit toleransi terhadap risiko. Cocok untuk instrumen pendapatan tetap.",
+    "rekomendasi": [
+      "Reksa Dana Pendapatan Tetap",
+      "Obligasi Korporasi",
+      "ORI/SBR",
+      "Deposito"
+    ],
+    "rules": [
+      {
+        "conditions": [
+          {
+            "qid": "Q11",
             "value": true
+          },
+          {
+            "qid": "Q10",
+            "value": false
           },
           {
             "qid": "Q4",
             "value": true
           }
         ],
+        "cf": 0.85
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q7",
+            "value": false
+          },
+          {
+            "qid": "Q8",
+            "value": true
+          },
+          {
+            "qid": "Q9",
+            "value": false
+          }
+        ],
+        "cf": 0.8
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q13",
+            "value": false
+          },
+          {
+            "qid": "Q14",
+            "value": true
+          },
+          {
+            "qid": "Q12",
+            "value": false
+          }
+        ],
+        "cf": 0.78
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q2",
+            "value": true
+          },
+          {
+            "qid": "Q6",
+            "value": true
+          },
+          {
+            "qid": "Q11",
+            "value": true
+          }
+        ],
+        "cf": 0.75
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q9",
+            "value": false
+          },
+          {
+            "qid": "Q15",
+            "value": true
+          },
+          {
+            "qid": "Q16",
+            "value": true
+          }
+        ],
         "cf": 0.82
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q3",
+            "value": false
+          },
+          {
+            "qid": "Q4",
+            "value": true
+          },
+          {
+            "qid": "Q10",
+            "value": false
+          }
+        ],
+        "cf": 0.76
+      }
+    ]
+  },
+  "moderat": {
+    "label": "Moderat",
+    "color": "#f59e0b",
+    "description": "Investor moderat menerima risiko menengah demi potensi keuntungan yang lebih baik. Portofolio campuran antara saham dan obligasi sangat disarankan.",
+    "rekomendasi": [
+      "Reksa Dana Campuran",
+      "Saham Blue Chip",
+      "Obligasi Korporasi",
+      "ETF"
+    ],
+    "rules": [
+      {
+        "conditions": [
+          {
+            "qid": "Q8",
+            "value": true
+          },
+          {
+            "qid": "Q11",
+            "value": false
+          },
+          {
+            "qid": "Q10",
+            "value": false
+          }
+        ],
+        "cf": 0.85
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q4",
+            "value": true
+          },
+          {
+            "qid": "Q7",
+            "value": true
+          },
+          {
+            "qid": "Q12",
+            "value": false
+          }
+        ],
+        "cf": 0.82
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q13",
+            "value": true
+          },
+          {
+            "qid": "Q14",
+            "value": true
+          },
+          {
+            "qid": "Q9",
+            "value": false
+          }
+        ],
+        "cf": 0.8
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q1",
+            "value": true
+          },
+          {
+            "qid": "Q15",
+            "value": true
+          },
+          {
+            "qid": "Q10",
+            "value": false
+          }
+        ],
+        "cf": 0.78
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q3",
+            "value": true
+          },
+          {
+            "qid": "Q2",
+            "value": true
+          },
+          {
+            "qid": "Q16",
+            "value": true
+          }
+        ],
+        "cf": 0.75
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q9",
+            "value": true
+          },
+          {
+            "qid": "Q11",
+            "value": false
+          },
+          {
+            "qid": "Q16",
+            "value": true
+          }
+        ],
+        "cf": 0.88
+      }
+    ]
+  },
+  "agresif": {
+    "label": "Agresif",
+    "color": "#f87171",
+    "description": "Investor agresif siap menghadapi risiko tinggi demi potensi keuntungan maksimal. Cocok untuk saham pertumbuhan, kripto, atau instrumen derivatif.",
+    "rekomendasi": [
+      "Saham Growth",
+      "Reksa Dana Saham",
+      "Kripto (sebagian kecil)",
+      "ETF Tematik"
+    ],
+    "rules": [
+      {
+        "conditions": [
+          {
+            "qid": "Q10",
+            "value": true
+          },
+          {
+            "qid": "Q11",
+            "value": false
+          },
+          {
+            "qid": "Q12",
+            "value": true
+          }
+        ],
+        "cf": 0.95
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q4",
+            "value": true
+          },
+          {
+            "qid": "Q9",
+            "value": true
+          },
+          {
+            "qid": "Q16",
+            "value": true
+          }
+        ],
+        "cf": 0.9
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q1",
+            "value": true
+          },
+          {
+            "qid": "Q13",
+            "value": true
+          },
+          {
+            "qid": "Q14",
+            "value": true
+          }
+        ],
+        "cf": 0.88
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q7",
+            "value": true
+          },
+          {
+            "qid": "Q8",
+            "value": true
+          },
+          {
+            "qid": "Q15",
+            "value": true
+          }
+        ],
+        "cf": 0.85
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q3",
+            "value": true
+          },
+          {
+            "qid": "Q5",
+            "value": false
+          },
+          {
+            "qid": "Q6",
+            "value": true
+          }
+        ],
+        "cf": 0.82
+      },
+      {
+        "conditions": [
+          {
+            "qid": "Q12",
+            "value": true
+          },
+          {
+            "qid": "Q15",
+            "value": true
+          },
+          {
+            "qid": "Q10",
+            "value": true
+          }
+        ],
+        "cf": 0.92
       }
     ]
   }

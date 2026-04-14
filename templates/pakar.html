@@ -8,7 +8,7 @@
     <div>
       <div class="pakar-badge">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         </svg>
         Panel Pakar
       </div>
@@ -17,7 +17,8 @@
     </div>
     <button class="btn-reset" id="btnReset" onclick="resetRules()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
+        <polyline points="1 4 1 10 7 10" />
+        <path d="M3.51 15a9 9 0 102.13-9.36L1 10" />
       </svg>
       Reset ke Default
     </button>
@@ -31,12 +32,14 @@
     <div class="section-card-header" onclick="toggleSection('questionsSection')">
       <h2 class="section-title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/>
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01" />
         </svg>
         Referensi ID Pertanyaan
       </h2>
-      <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="6 9 12 15 18 9"/>
+      <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2">
+        <polyline points="6 9 12 15 18 9" />
       </svg>
     </div>
     <div id="questionsSection" class="collapsible">
@@ -56,13 +59,13 @@
 
   <!-- Rules per Profil -->
   {% set profiles = [
-    ('sangat_konservatif', '[Shield]', 'Sangat Konservatif', 'green'),
-    ('konservatif', '[Circle]', 'Konservatif', 'blue'),
-    ('moderat', '[Balance]', 'Moderat', 'amber'),
-    ('agresif', '[Rocket]', 'Agresif', 'red')
+  ('sangat_konservatif', 'Sangat Konservatif', 'green'),
+  ('konservatif', 'Konservatif', 'blue'),
+  ('moderat', 'Moderat', 'amber'),
+  ('agresif', 'Agresif', 'red')
   ] %}
 
-  {% for pk, icon, label, color in profiles %}
+  {% for pk, icon, color in profiles %}
   <div class="section-card profile-section profile-section--{{ pk }}">
     <div class="section-card-header">
       <h2 class="section-title">
@@ -72,7 +75,8 @@
       </h2>
       <button class="btn-add-rule" onclick="openAddRuleModal('{{ pk }}', '{{ label }}')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
         Tambah Rule
       </button>
@@ -110,14 +114,8 @@
             </td>
             <td>
               <div class="cf-edit-wrap">
-                <input 
-                  type="number" 
-                  class="cf-input" 
-                  value="{{ rule.cf }}" 
-                  min="0" max="1" step="0.01"
-                  data-original="{{ rule.cf }}"
-                  onchange="updateCF('{{ pk }}', {{ loop.index0 }}, this)"
-                />
+                <input type="number" class="cf-input" value="{{ rule.cf }}" min="0" max="1" step="0.01"
+                  data-original="{{ rule.cf }}" onchange="updateCF('{{ pk }}', {{ loop.index0 }}, this)" />
                 <div class="cf-bar-mini">
                   <div class="cf-bar-mini-fill" style="width: {{ (rule.cf * 100) | round(0) }}%"></div>
                 </div>
@@ -126,14 +124,17 @@
             <td>
               <button class="btn-delete-rule" onclick="deleteRule('{{ pk }}', {{ loop.index0 }})">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2" />
                 </svg>
                 Hapus
               </button>
             </td>
           </tr>
           {% else %}
-          <tr><td colspan="4" class="empty-row">Belum ada rule. Tambahkan rule baru.</td></tr>
+          <tr>
+            <td colspan="4" class="empty-row">Belum ada rule. Tambahkan rule baru.</td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
@@ -150,7 +151,8 @@
       <h3 class="modal-title">Tambah Rule Baru</h3>
       <button class="modal-close" onclick="closeModal()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
     </div>
@@ -167,7 +169,8 @@
         </div>
         <button type="button" class="btn-add-cond" onclick="addCondition()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
           Tambah Kondisi
         </button>
@@ -193,108 +196,108 @@
 
 {% block extra_js %}
 <script>
-const QUESTIONS = {{ questions | tojson }};
-let conditionCount = 0;
+  const QUESTIONS = {{ questions | tojson }};
+  let conditionCount = 0;
 
-// ─── Toast ───
-function showToast(msg, type = 'success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast toast--${type} toast--show`;
-  setTimeout(() => t.className = 'toast', 3000);
-}
-
-// ─── Update CF ───
-async function updateCF(profile, idx, input) {
-  const val = parseFloat(input.value);
-  if (isNaN(val) || val < 0 || val > 1) {
-    showToast('Nilai CF harus antara 0 dan 1', 'error');
-    input.value = input.dataset.original;
-    return;
+  // ─── Toast ───
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast toast--${type} toast--show`;
+    setTimeout(() => t.className = 'toast', 3000);
   }
-  try {
-    const res = await fetch('/pakar/update_cf', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({profile, rule_idx: idx, cf: val})
-    });
-    const data = await res.json();
-    if (data.status === 'ok') {
-      input.dataset.original = val;
-      // Update mini bar
-      const bar = input.closest('.cf-edit-wrap').querySelector('.cf-bar-mini-fill');
-      bar.style.width = (val * 100) + '%';
-      showToast(`CF Rule ${idx+1} diperbarui menjadi ${val}`);
-    } else {
-      showToast(data.message, 'error');
+
+  // ─── Update CF ───
+  async function updateCF(profile, idx, input) {
+    const val = parseFloat(input.value);
+    if (isNaN(val) || val < 0 || val > 1) {
+      showToast('Nilai CF harus antara 0 dan 1', 'error');
+      input.value = input.dataset.original;
+      return;
     }
-  } catch(e) {
-    showToast('Gagal memperbarui CF', 'error');
-  }
-}
-
-// ─── Delete Rule ───
-async function deleteRule(profile, idx) {
-  if (!confirm(`Hapus Rule #${idx+1} dari profil ini?`)) return;
-  try {
-    const res = await fetch('/pakar/delete_rule', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({profile, rule_idx: idx})
-    });
-    const data = await res.json();
-    if (data.status === 'ok') {
-      showToast('Rule berhasil dihapus');
-      setTimeout(() => location.reload(), 800);
-    } else {
-      showToast(data.message, 'error');
+    try {
+      const res = await fetch('/pakar/update_cf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile, rule_idx: idx, cf: val })
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        input.dataset.original = val;
+        // Update mini bar
+        const bar = input.closest('.cf-edit-wrap').querySelector('.cf-bar-mini-fill');
+        bar.style.width = (val * 100) + '%';
+        showToast(`CF Rule ${idx + 1} diperbarui menjadi ${val}`);
+      } else {
+        showToast(data.message, 'error');
+      }
+    } catch (e) {
+      showToast('Gagal memperbarui CF', 'error');
     }
-  } catch(e) {
-    showToast('Gagal menghapus rule', 'error');
   }
-}
 
-// ─── Reset Rules ───
-async function resetRules() {
-  if (!confirm('Reset semua rules ke nilai default? Semua perubahan akan hilang.')) return;
-  try {
-    const res = await fetch('/pakar/reset', {method: 'POST'});
-    const data = await res.json();
-    if (data.status === 'ok') {
-      showToast('Rules direset ke default');
-      setTimeout(() => location.reload(), 800);
+  // ─── Delete Rule ───
+  async function deleteRule(profile, idx) {
+    if (!confirm(`Hapus Rule #${idx + 1} dari profil ini?`)) return;
+    try {
+      const res = await fetch('/pakar/delete_rule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile, rule_idx: idx })
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        showToast('Rule berhasil dihapus');
+        setTimeout(() => location.reload(), 800);
+      } else {
+        showToast(data.message, 'error');
+      }
+    } catch (e) {
+      showToast('Gagal menghapus rule', 'error');
     }
-  } catch(e) {
-    showToast('Gagal reset', 'error');
   }
-}
 
-// ─── Modal ───
-function openAddRuleModal(profile, label) {
-  document.getElementById('modalProfile').value = profile;
-  document.getElementById('modalProfileInfo').textContent = `Profil: ${label}`;
-  document.getElementById('conditionsList').innerHTML = '';
-  conditionCount = 0;
-  addCondition();
-  syncCfInput();
-  document.getElementById('addRuleModal').classList.add('modal-overlay--show');
-}
+  // ─── Reset Rules ───
+  async function resetRules() {
+    if (!confirm('Reset semua rules ke nilai default? Semua perubahan akan hilang.')) return;
+    try {
+      const res = await fetch('/pakar/reset', { method: 'POST' });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        showToast('Rules direset ke default');
+        setTimeout(() => location.reload(), 800);
+      }
+    } catch (e) {
+      showToast('Gagal reset', 'error');
+    }
+  }
 
-function closeModal() {
-  document.getElementById('addRuleModal').classList.remove('modal-overlay--show');
-}
+  // ─── Modal ───
+  function openAddRuleModal(profile, label) {
+    document.getElementById('modalProfile').value = profile;
+    document.getElementById('modalProfileInfo').textContent = `Profil: ${label}`;
+    document.getElementById('conditionsList').innerHTML = '';
+    conditionCount = 0;
+    addCondition();
+    syncCfInput();
+    document.getElementById('addRuleModal').classList.add('modal-overlay--show');
+  }
 
-function addCondition() {
-  conditionCount++;
-  const div = document.createElement('div');
-  div.className = 'condition-row';
-  div.id = `cond-${conditionCount}`;
+  function closeModal() {
+    document.getElementById('addRuleModal').classList.remove('modal-overlay--show');
+  }
 
-  const qOptions = QUESTIONS.map(q =>
-    `<option value="${q.id}">${q.id}: ${q.text.substring(0, 50)}...</option>`
-  ).join('');
+  function addCondition() {
+    conditionCount++;
+    const div = document.createElement('div');
+    div.className = 'condition-row';
+    div.id = `cond-${conditionCount}`;
 
-  div.innerHTML = `
+    const qOptions = QUESTIONS.map(q =>
+      `<option value="${q.id}">${q.id}: ${q.text.substring(0, 50)}...</option>`
+    ).join('');
+
+    div.innerHTML = `
     <select class="cond-select cond-qid-sel">${qOptions}</select>
     <select class="cond-select cond-val-sel">
       <option value="true">YA</option>
@@ -306,84 +309,84 @@ function addCondition() {
       </svg>
     </button>
   `;
-  document.getElementById('conditionsList').appendChild(div);
-}
+    document.getElementById('conditionsList').appendChild(div);
+  }
 
-function removeCondition(id) {
-  document.getElementById(`cond-${id}`).remove();
-}
+  function removeCondition(id) {
+    document.getElementById(`cond-${id}`).remove();
+  }
 
-function syncCfInput() {
-  const v = parseFloat(document.getElementById('cfRange').value);
-  document.getElementById('cfInputModal').value = v.toFixed(2);
-  updateCfInterpretation(v);
-}
-
-function syncCfRange() {
-  const v = parseFloat(document.getElementById('cfInputModal').value);
-  if (!isNaN(v) && v >= 0 && v <= 1) {
-    document.getElementById('cfRange').value = v;
+  function syncCfInput() {
+    const v = parseFloat(document.getElementById('cfRange').value);
+    document.getElementById('cfInputModal').value = v.toFixed(2);
     updateCfInterpretation(v);
   }
-}
 
-function updateCfInterpretation(v) {
-  const el = document.getElementById('cfInterpretation');
-  if (v >= 0.8) el.textContent = '🔥 Kepercayaan Sangat Tinggi';
-  else if (v >= 0.6) el.textContent = '✅ Kepercayaan Tinggi';
-  else if (v >= 0.4) el.textContent = '⚠️ Kepercayaan Sedang';
-  else if (v >= 0.2) el.textContent = '📉 Kepercayaan Rendah';
-  else el.textContent = '❓ Kepercayaan Sangat Rendah';
-}
-
-async function saveNewRule() {
-  const profile = document.getElementById('modalProfile').value;
-  const cf = parseFloat(document.getElementById('cfInputModal').value);
-
-  const rows = document.querySelectorAll('.condition-row');
-  const conditions = [];
-  rows.forEach(row => {
-    const qid = row.querySelector('.cond-qid-sel').value;
-    const val = row.querySelector('.cond-val-sel').value === 'true';
-    conditions.push({qid, value: val});
-  });
-
-  if (conditions.length === 0) {
-    showToast('Tambahkan minimal 1 kondisi', 'error');
-    return;
-  }
-  if (isNaN(cf) || cf < 0 || cf > 1) {
-    showToast('Nilai CF tidak valid', 'error');
-    return;
-  }
-
-  try {
-    const res = await fetch('/pakar/add_rule', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({profile, conditions, cf})
-    });
-    const data = await res.json();
-    if (data.status === 'ok') {
-      showToast('Rule berhasil ditambahkan!');
-      closeModal();
-      setTimeout(() => location.reload(), 800);
-    } else {
-      showToast(data.message, 'error');
+  function syncCfRange() {
+    const v = parseFloat(document.getElementById('cfInputModal').value);
+    if (!isNaN(v) && v >= 0 && v <= 1) {
+      document.getElementById('cfRange').value = v;
+      updateCfInterpretation(v);
     }
-  } catch(e) {
-    showToast('Gagal menyimpan rule', 'error');
   }
-}
 
-function toggleSection(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle('collapsible--open');
-}
+  function updateCfInterpretation(v) {
+    const el = document.getElementById('cfInterpretation');
+    if (v >= 0.8) el.textContent = '🔥 Kepercayaan Sangat Tinggi';
+    else if (v >= 0.6) el.textContent = '✅ Kepercayaan Tinggi';
+    else if (v >= 0.4) el.textContent = '⚠️ Kepercayaan Sedang';
+    else if (v >= 0.2) el.textContent = '📉 Kepercayaan Rendah';
+    else el.textContent = '❓ Kepercayaan Sangat Rendah';
+  }
 
-// Close modal on overlay click
-document.getElementById('addRuleModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
+  async function saveNewRule() {
+    const profile = document.getElementById('modalProfile').value;
+    const cf = parseFloat(document.getElementById('cfInputModal').value);
+
+    const rows = document.querySelectorAll('.condition-row');
+    const conditions = [];
+    rows.forEach(row => {
+      const qid = row.querySelector('.cond-qid-sel').value;
+      const val = row.querySelector('.cond-val-sel').value === 'true';
+      conditions.push({ qid, value: val });
+    });
+
+    if (conditions.length === 0) {
+      showToast('Tambahkan minimal 1 kondisi', 'error');
+      return;
+    }
+    if (isNaN(cf) || cf < 0 || cf > 1) {
+      showToast('Nilai CF tidak valid', 'error');
+      return;
+    }
+
+    try {
+      const res = await fetch('/pakar/add_rule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile, conditions, cf })
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        showToast('Rule berhasil ditambahkan!');
+        closeModal();
+        setTimeout(() => location.reload(), 800);
+      } else {
+        showToast(data.message, 'error');
+      }
+    } catch (e) {
+      showToast('Gagal menyimpan rule', 'error');
+    }
+  }
+
+  function toggleSection(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('collapsible--open');
+  }
+
+  // Close modal on overlay click
+  document.getElementById('addRuleModal').addEventListener('click', function (e) {
+    if (e.target === this) closeModal();
+  });
 </script>
 {% endblock %}
