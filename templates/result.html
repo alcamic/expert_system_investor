@@ -101,7 +101,7 @@
                     </span>
                     {% if not loop.last %}<span class="trace-and">AND</span>{% endif %}
                     {% endfor %}
-                    <span class="trace-then">→ TERPENUHI ✓</span>
+                    <span class="trace-then">→ TERPENUHI [OK]</span>
                 </div>
             </div>
             {% endfor %}
@@ -131,7 +131,7 @@
                     <div class="answer-text">{{ item.text }}</div>
                 </div>
                 <div class="answer-pill {% if item.answer %}answer-pill--yes{% else %}answer-pill--no{% endif %}">
-                    {% if item.answer %}✓ Ya{% else %}✗ Tidak{% endif %}
+                    {% if item.answer %}[OK] Ya{% else %}[X] Tidak{% endif %}
                 </div>
             </div>
             {% endfor %}

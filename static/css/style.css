@@ -1,45 +1,45 @@
 /* ═══════════════════════════════════════════════
    InvestIQ — Sistem Pakar Profil Risiko
-   Design: Dark Financial Luxury
+   Design: Clean White-Cream Elegance
    Font: Syne (display) + DM Sans (body)
 ═══════════════════════════════════════════════ */
 
 :root {
-    --bg: #0a0b0f;
-    --bg-2: #111318;
-    --bg-3: #191c24;
-    --bg-4: #1e2230;
-    --border: rgba(255, 255, 255, 0.07);
-    --border-hover: rgba(255, 255, 255, 0.15);
+    --bg: #FFFFFF;
+    --bg-2: #FEFDFB;
+    --bg-3: #FAF8F3;
+    --bg-4: #F5F1EB;
+    --border: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(0, 0, 0, 0.15);
 
-    --text: #f0f2f8;
-    --text-2: #8b92a8;
-    --text-3: #545970;
+    --text: #2C2C2C;
+    --text-2: #666666;
+    --text-3: #999999;
 
-    --green: #4ade80;
-    --green-dim: rgba(74, 222, 128, 0.12);
-    --green-glow: rgba(74, 222, 128, 0.25);
+    --green: #22C55E;
+    --green-dim: rgba(34, 197, 94, 0.12);
+    --green-glow: rgba(34, 197, 94, 0.25);
 
-    --blue: #60a5fa;
-    --blue-dim: rgba(96, 165, 250, 0.12);
-    --blue-glow: rgba(96, 165, 250, 0.25);
+    --blue: #3B82F6;
+    --blue-dim: rgba(59, 130, 246, 0.12);
+    --blue-glow: rgba(59, 130, 246, 0.25);
 
-    --amber: #fbbf24;
-    --amber-dim: rgba(251, 191, 36, 0.12);
-    --amber-glow: rgba(251, 191, 36, 0.25);
+    --amber: #F59E0B;
+    --amber-dim: rgba(245, 158, 11, 0.12);
+    --amber-glow: rgba(245, 158, 11, 0.25);
 
-    --red: #f87171;
-    --red-dim: rgba(248, 113, 113, 0.12);
-    --red-glow: rgba(248, 113, 113, 0.25);
+    --red: #EF4444;
+    --red-dim: rgba(239, 68, 68, 0.12);
+    --red-glow: rgba(239, 68, 68, 0.25);
 
-    --accent: #7c6fff;
-    --accent-dim: rgba(124, 111, 255, 0.15);
+    --accent: #8B5CF6;
+    --accent-dim: rgba(139, 92, 246, 0.15);
 
     --radius: 16px;
     --radius-sm: 10px;
     --radius-xs: 6px;
-    --shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 8px 64px rgba(0, 0, 0, 0.6);
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
 * {
@@ -68,7 +68,7 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 1;
-    opacity: 0.5;
+    opacity: 0.2;
 }
 
 /* ─── NAVBAR ─────────────────────────────────── */
@@ -82,7 +82,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 16px 40px;
-    background: rgba(10, 11, 15, 0.8);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
 }
@@ -231,8 +231,8 @@ body {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
     background-size: 60px 60px;
 }
 
@@ -1683,7 +1683,7 @@ body {
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     z-index: 500;
     display: flex;
