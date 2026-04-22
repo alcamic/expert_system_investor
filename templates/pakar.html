@@ -57,6 +57,9 @@
     </div>
   </div>
 
+  {# Counter global untuk penomoran rule R1–R24 lintas semua profil #}
+  {% set ns = namespace(rule_num=0) %}
+
   <!-- Rules per Profil -->
   {% set profiles = [
   ('sangat_konservatif', 'Sangat Konservatif', 'green'),
@@ -65,12 +68,11 @@
   ('agresif', 'Agresif', 'red')
   ] %}
 
-  {% for pk, icon, color in profiles %}
+  {% for pk, label, color in profiles %}
   <div class="section-card profile-section profile-section--{{ pk }}">
     <div class="section-card-header">
       <h2 class="section-title">
-        <span class="profile-icon">{{ icon }}</span>
-        {{ label }}
+        <span class="profile-icon profile-icon--{{ color }}">{{ label }}</span>
         <span class="rule-count-badge" id="count-{{ pk }}">{{ rules[pk].rules | length }} rules</span>
       </h2>
       <button class="btn-add-rule" onclick="openAddRuleModal('{{ pk }}', '{{ label }}')">
@@ -94,8 +96,9 @@
         </thead>
         <tbody>
           {% for rule in rules[pk].rules %}
+          {% set ns.rule_num = ns.rule_num + 1 %}
           <tr data-profile="{{ pk }}" data-idx="{{ loop.index0 }}">
-            <td><span class="rule-badge">R{{ loop.index }}</span></td>
+            <td><span class="rule-badge">R{{ ns.rule_num }}</span></td>
             <td>
               <div class="conditions-list">
                 {% for cond in rule.conditions %}
@@ -159,14 +162,11 @@
 
     <div class="modal-body">
       <input type="hidden" id="modalProfile" />
-
       <div class="modal-profile-info" id="modalProfileInfo"></div>
 
       <div class="form-group">
         <label class="form-label">Kondisi (IF)</label>
-        <div id="conditionsList">
-          <!-- Dynamic conditions -->
-        </div>
+        <div id="conditionsList"></div>
         <button type="button" class="btn-add-cond" onclick="addCondition()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="12" y1="5" x2="12" y2="19" />
@@ -199,7 +199,6 @@
   const QUESTIONS = {{ questions | tojson }};
   let conditionCount = 0;
 
-  // ─── Toast ───
   function showToast(msg, type = 'success') {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -207,7 +206,6 @@
     setTimeout(() => t.className = 'toast', 3000);
   }
 
-  // ─── Update CF ───
   async function updateCF(profile, idx, input) {
     const val = parseFloat(input.value);
     if (isNaN(val) || val < 0 || val > 1) {
@@ -224,10 +222,9 @@
       const data = await res.json();
       if (data.status === 'ok') {
         input.dataset.original = val;
-        // Update mini bar
         const bar = input.closest('.cf-edit-wrap').querySelector('.cf-bar-mini-fill');
         bar.style.width = (val * 100) + '%';
-        showToast(`CF Rule ${idx + 1} diperbarui menjadi ${val}`);
+        showToast(`CF diperbarui menjadi ${val}`);
       } else {
         showToast(data.message, 'error');
       }
@@ -236,9 +233,8 @@
     }
   }
 
-  // ─── Delete Rule ───
   async function deleteRule(profile, idx) {
-    if (!confirm(`Hapus Rule #${idx + 1} dari profil ini?`)) return;
+    if (!confirm(`Hapus rule ini dari profil?`)) return;
     try {
       const res = await fetch('/pakar/delete_rule', {
         method: 'POST',
@@ -257,7 +253,6 @@
     }
   }
 
-  // ─── Reset Rules ───
   async function resetRules() {
     if (!confirm('Reset semua rules ke nilai default? Semua perubahan akan hilang.')) return;
     try {
@@ -272,7 +267,6 @@
     }
   }
 
-  // ─── Modal ───
   function openAddRuleModal(profile, label) {
     document.getElementById('modalProfile').value = profile;
     document.getElementById('modalProfileInfo').textContent = `Profil: ${label}`;
@@ -292,23 +286,21 @@
     const div = document.createElement('div');
     div.className = 'condition-row';
     div.id = `cond-${conditionCount}`;
-
     const qOptions = QUESTIONS.map(q =>
       `<option value="${q.id}">${q.id}: ${q.text.substring(0, 50)}...</option>`
     ).join('');
-
     div.innerHTML = `
-    <select class="cond-select cond-qid-sel">${qOptions}</select>
-    <select class="cond-select cond-val-sel">
-      <option value="true">YA</option>
-      <option value="false">TIDAK</option>
-    </select>
-    <button class="btn-remove-cond" onclick="removeCondition(${conditionCount})" ${conditionCount === 1 ? 'disabled' : ''}>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-  `;
+      <select class="cond-select cond-qid-sel">${qOptions}</select>
+      <select class="cond-select cond-val-sel">
+        <option value="true">YA</option>
+        <option value="false">TIDAK</option>
+      </select>
+      <button class="btn-remove-cond" onclick="removeCondition(${conditionCount})" ${conditionCount === 1 ? 'disabled' : ''}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    `;
     document.getElementById('conditionsList').appendChild(div);
   }
 
@@ -342,7 +334,6 @@
   async function saveNewRule() {
     const profile = document.getElementById('modalProfile').value;
     const cf = parseFloat(document.getElementById('cfInputModal').value);
-
     const rows = document.querySelectorAll('.condition-row');
     const conditions = [];
     rows.forEach(row => {
@@ -350,16 +341,8 @@
       const val = row.querySelector('.cond-val-sel').value === 'true';
       conditions.push({ qid, value: val });
     });
-
-    if (conditions.length === 0) {
-      showToast('Tambahkan minimal 1 kondisi', 'error');
-      return;
-    }
-    if (isNaN(cf) || cf < 0 || cf > 1) {
-      showToast('Nilai CF tidak valid', 'error');
-      return;
-    }
-
+    if (conditions.length === 0) { showToast('Tambahkan minimal 1 kondisi', 'error'); return; }
+    if (isNaN(cf) || cf < 0 || cf > 1) { showToast('Nilai CF tidak valid', 'error'); return; }
     try {
       const res = await fetch('/pakar/add_rule', {
         method: 'POST',
@@ -380,11 +363,9 @@
   }
 
   function toggleSection(id) {
-    const el = document.getElementById(id);
-    el.classList.toggle('collapsible--open');
+    document.getElementById(id).classList.toggle('collapsible--open');
   }
 
-  // Close modal on overlay click
   document.getElementById('addRuleModal').addEventListener('click', function (e) {
     if (e.target === this) closeModal();
   });

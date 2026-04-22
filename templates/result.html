@@ -11,7 +11,6 @@
 
         <div class="result-header">
             <div class="result-badge">Profil Risiko Anda</div>
-            <div class="result-icon-big">{{ profile.icon }}</div>
             <h1 class="result-title">{{ profile.label }}</h1>
             <div class="result-cf-main">
                 <span class="cf-label">Certainty Factor</span>
@@ -39,7 +38,6 @@
             {% for pk, pdata in all_profiles.items() %}
             <div class="cf-bar-item {% if pk == profile_key %}cf-bar-item--best{% endif %}">
                 <div class="cf-bar-header">
-                    <span class="cf-bar-icon">{{ pdata.icon }}</span>
                     <span class="cf-bar-label">{{ pdata.label }}</span>
                     <span class="cf-bar-pct">{{ cf_results[pk] }}%</span>
                 </div>
@@ -82,11 +80,34 @@
             </svg>
             Jejak Inferensi (Forward Chaining)
         </h2>
+
+        {#
+        Hitung offset global agar nomor Rule sinkron dengan pakar.html.
+        Jinja2 tidak punya {% break %}, jadi pakai flag 'reached' untuk
+        berhenti menambah offset setelah profil aktif ditemukan.
+
+        sangat_konservatif → offset 0 → Rule #1 – #6
+        konservatif → offset 6 → Rule #7 – #12
+        moderat → offset 12 → Rule #13 – #18
+        agresif → offset 18 → Rule #19 – #24
+        #}
+        {% set profile_order = ['sangat_konservatif', 'konservatif', 'moderat', 'agresif'] %}
+        {% set ns = namespace(global_offset=0, reached=false) %}
+        {% for pk in profile_order %}
+        {% if not ns.reached %}
+        {% if pk == profile_key %}
+        {% set ns.reached = true %}
+        {% else %}
+        {% set ns.global_offset = ns.global_offset + (all_profiles[pk].rules | length) %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+
         <div class="trace-list">
             {% for rule in trace %}
             <div class="trace-item">
                 <div class="trace-header">
-                    <span class="trace-rule">Rule #{{ rule.rule_idx }}</span>
+                    <span class="trace-rule">Rule #{{ ns.global_offset + rule.rule_idx }}</span>
                     <span class="trace-cf-badge">CF = {{ rule.cf }}</span>
                 </div>
                 <div class="trace-conditions">
@@ -106,6 +127,7 @@
             </div>
             {% endfor %}
         </div>
+
         <div class="trace-formula">
             <div class="formula-title">Rumus Kombinasi CF</div>
             <code class="formula-code">CF_combined = CF₁ + CF₂ × (1 − CF₁)</code>
@@ -131,7 +153,7 @@
                     <div class="answer-text">{{ item.text }}</div>
                 </div>
                 <div class="answer-pill {% if item.answer %}answer-pill--yes{% else %}answer-pill--no{% endif %}">
-                    {% if item.answer %}[OK] Ya{% else %}[X] Tidak{% endif %}
+                    {% if item.answer %}✓ Ya{% else %}✗ Tidak{% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -186,7 +208,7 @@
             });
         }, 300);
 
-        // Confetti sederhana untuk profil agresif/moderat
+        // Confetti untuk profil agresif/moderat
         if (profileKey === 'agresif' || profileKey === 'moderat') {
             createConfetti();
         }
@@ -199,13 +221,13 @@
             const dot = document.createElement('div');
             dot.className = 'confetti-dot';
             dot.style.cssText = `
-      left: ${Math.random() * 100}%;
-      background: ${colors[Math.floor(Math.random() * colors.length)]};
-      animation-delay: ${Math.random() * 2}s;
-      animation-duration: ${2 + Math.random() * 2}s;
-      width: ${4 + Math.random() * 6}px;
-      height: ${4 + Math.random() * 6}px;
-    `;
+                left: ${Math.random() * 100}%;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                animation-delay: ${Math.random() * 2}s;
+                animation-duration: ${2 + Math.random() * 2}s;
+                width: ${4 + Math.random() * 6}px;
+                height: ${4 + Math.random() * 6}px;
+            `;
             container.appendChild(dot);
         }
     }
