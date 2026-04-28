@@ -1,8 +1,83 @@
 {% extends "base.html" %}
 {% block title %}Panel Pakar — InvestIQ{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* ── PAKAR PAGE GUARD ───────────────────────────────────────
+       Jika user membuka /pakar langsung tanpa melalui gate,
+       halaman ini akan menampilkan layar blokir penuh.        */
+  .pakar-guard {
+    position: fixed;
+    inset: 0;
+    z-index: 8888;
+    background: #06080f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .pakar-guard-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #818cf8;
+    margin-bottom: 8px;
+  }
+
+  .pakar-guard h2 {
+    font-family: 'Syne', sans-serif;
+    color: #f1f5f9;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  .pakar-guard p {
+    color: #475569;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .pakar-guard-btn {
+    margin-top: 8px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .pakar-guard-btn:hover {
+    opacity: 0.85;
+  }
+
+  /* Sembunyikan konten saat guard aktif */
+  body.pakar-locked .pakar-wrapper {
+    visibility: hidden;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="pakar-wrapper">
+
+<!-- Guard sudah ditangani server-side oleh @login_required di Flask -->
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!--  KONTEN PAKAR                                               -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="pakar-wrapper" id="pakarContent">
 
   <div class="pakar-header">
     <div>
@@ -15,13 +90,34 @@
       <h1 class="pakar-title">Manajemen Basis Pengetahuan</h1>
       <p class="pakar-desc">Kelola aturan inferensi dan nilai Certainty Factor untuk setiap profil risiko investasi.</p>
     </div>
-    <button class="btn-reset" id="btnReset" onclick="resetRules()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="1 4 1 10 7 10" />
-        <path d="M3.51 15a9 9 0 102.13-9.36L1 10" />
-      </svg>
-      Reset ke Default
-    </button>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <!-- Info CF Threshold -->
+      <div class="threshold-badge" title="Minimum CF agar profil dianggap valid">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        CF Threshold: <strong>{{ (cf_threshold * 100) | round(0) | int }}%</strong>
+      </div>
+      <button class="btn-reset" id="btnReset" onclick="resetRules()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="1 4 1 10 7 10" />
+          <path d="M3.51 15a9 9 0 102.13-9.36L1 10" />
+        </svg>
+        Reset ke Default
+      </button>
+      <form method="POST" action="{{ url_for('pakar_logout') }}" style="margin:0;">
+        <button type="submit" class="btn-logout">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Keluar
+        </button>
+      </form>
+    </div>
   </div>
 
   <!-- Toast Notification -->
@@ -145,9 +241,9 @@
   </div>
   {% endfor %}
 
-</div>
+</div><!-- /pakar-wrapper -->
 
-<!-- Modal Tambah Rule -->
+<!-- ── MODAL TAMBAH RULE ───────────────────────────────────── -->
 <div class="modal-overlay" id="addRuleModal">
   <div class="modal">
     <div class="modal-header">
@@ -192,6 +288,7 @@
     </div>
   </div>
 </div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -199,6 +296,7 @@
   const QUESTIONS = {{ questions | tojson }};
   let conditionCount = 0;
 
+  /* ── TOAST ──────────────────────────────────────────────── */
   function showToast(msg, type = 'success') {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -206,6 +304,7 @@
     setTimeout(() => t.className = 'toast', 3000);
   }
 
+  /* ── CF UPDATE ──────────────────────────────────────────── */
   async function updateCF(profile, idx, input) {
     const val = parseFloat(input.value);
     if (isNaN(val) || val < 0 || val > 1) {
@@ -224,17 +323,18 @@
         input.dataset.original = val;
         const bar = input.closest('.cf-edit-wrap').querySelector('.cf-bar-mini-fill');
         bar.style.width = (val * 100) + '%';
-        showToast(`CF diperbarui menjadi ${val}`);
+        showToast(`CF diperbarui → ${val}`);
       } else {
         showToast(data.message, 'error');
       }
-    } catch (e) {
+    } catch {
       showToast('Gagal memperbarui CF', 'error');
     }
   }
 
+  /* ── DELETE RULE ────────────────────────────────────────── */
   async function deleteRule(profile, idx) {
-    if (!confirm(`Hapus rule ini dari profil?`)) return;
+    if (!confirm('Hapus rule ini dari profil?')) return;
     try {
       const res = await fetch('/pakar/delete_rule', {
         method: 'POST',
@@ -248,11 +348,12 @@
       } else {
         showToast(data.message, 'error');
       }
-    } catch (e) {
+    } catch {
       showToast('Gagal menghapus rule', 'error');
     }
   }
 
+  /* ── RESET ──────────────────────────────────────────────── */
   async function resetRules() {
     if (!confirm('Reset semua rules ke nilai default? Semua perubahan akan hilang.')) return;
     try {
@@ -262,11 +363,12 @@
         showToast('Rules direset ke default');
         setTimeout(() => location.reload(), 800);
       }
-    } catch (e) {
+    } catch {
       showToast('Gagal reset', 'error');
     }
   }
 
+  /* ── MODAL ADD RULE ─────────────────────────────────────── */
   function openAddRuleModal(profile, label) {
     document.getElementById('modalProfile').value = profile;
     document.getElementById('modalProfileInfo').textContent = `Profil: ${label}`;
@@ -287,7 +389,7 @@
     div.className = 'condition-row';
     div.id = `cond-${conditionCount}`;
     const qOptions = QUESTIONS.map(q =>
-      `<option value="${q.id}">${q.id}: ${q.text.substring(0, 50)}...</option>`
+      `<option value="${q.id}">${q.id}: ${q.text.substring(0, 55)}...</option>`
     ).join('');
     div.innerHTML = `
       <select class="cond-select cond-qid-sel">${qOptions}</select>
@@ -295,7 +397,8 @@
         <option value="true">YA</option>
         <option value="false">TIDAK</option>
       </select>
-      <button class="btn-remove-cond" onclick="removeCondition(${conditionCount})" ${conditionCount === 1 ? 'disabled' : ''}>
+      <button class="btn-remove-cond" onclick="removeCondition(${conditionCount})"
+              ${conditionCount === 1 ? 'disabled' : ''} type="button">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
@@ -336,13 +439,16 @@
     const cf = parseFloat(document.getElementById('cfInputModal').value);
     const rows = document.querySelectorAll('.condition-row');
     const conditions = [];
+
     rows.forEach(row => {
       const qid = row.querySelector('.cond-qid-sel').value;
       const val = row.querySelector('.cond-val-sel').value === 'true';
       conditions.push({ qid, value: val });
     });
+
     if (conditions.length === 0) { showToast('Tambahkan minimal 1 kondisi', 'error'); return; }
     if (isNaN(cf) || cf < 0 || cf > 1) { showToast('Nilai CF tidak valid', 'error'); return; }
+
     try {
       const res = await fetch('/pakar/add_rule', {
         method: 'POST',
@@ -357,17 +463,60 @@
       } else {
         showToast(data.message, 'error');
       }
-    } catch (e) {
+    } catch {
       showToast('Gagal menyimpan rule', 'error');
     }
   }
 
+  /* ── COLLAPSIBLE ────────────────────────────────────────── */
   function toggleSection(id) {
     document.getElementById(id).classList.toggle('collapsible--open');
   }
 
+  /* ── CLOSE MODAL ON BACKDROP CLICK ─────────────────────── */
   document.getElementById('addRuleModal').addEventListener('click', function (e) {
     if (e.target === this) closeModal();
   });
 </script>
+
+<style>
+  /* ── Tombol Logout & Threshold Badge ───────────────────── */
+  .btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 8px;
+    color: #f87171;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .btn-logout:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.35);
+  }
+
+  .threshold-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 8px;
+    color: #818cf8;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+  }
+
+  .threshold-badge strong {
+    color: #a5b4fc;
+  }
+</style>
 {% endblock %}
